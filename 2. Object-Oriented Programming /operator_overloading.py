@@ -31,12 +31,50 @@ class Vector:
         return self._coords == other._coords
 
     def __ne__(self, other):
-        "returns true if vectors differ"
+        """returns true if vectors differ"""
         return not self == other
 
     def __str__(self):
-        "productive string  representation of vector"
+        """productive string  representation of vector"""
         return '<' + str(self._coords)[1:-1] + '>'
+
+
+class Range:
+    """A custom implementation of the class range"""
+
+    def __init__(self, start, stop=None, step=1):
+        """
+        Initialize a range instance. Semantics are similar to the built in range class
+        Args:
+            start: start of sequence
+            stop: end of sequence
+            step: the step size to generate next value
+        """
+        if step == 0:
+            raise ValueError("step cannot be 0")
+
+        if stop is None:
+            start, stop = 0, start  # A nice way of swapping without temp variables
+
+        # calculate the effective length once
+        self._length = max(0, (stop - start + step -1) // step)
+        self._start = start
+        self._stop = stop
+        self._step = step
+
+    def __len__(self):
+        """returns the length of the range instance"""
+        return self._length
+
+    def __getitem__(self, item):
+        """returns a specifc entry from the range"""
+        if item < 0:
+            item += len(self)
+
+        if not 0 <= item < self._length:
+            raise IndexError("Index out of range")
+
+        return self._start + self._step * item
 
 
 if __name__ == "__main__":
