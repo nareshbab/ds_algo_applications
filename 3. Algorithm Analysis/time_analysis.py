@@ -77,12 +77,12 @@ def unique1(S):
     return True
 
 
-# Time compelxity of O(n): Provided the array is SORTED
+# Time compelxity of O(nlogn): Provided the array is SORTED
 # Same elements will be located together
 def unique2(S):
-    for i in range(1, len(S)):
-        print(i)
-        if S[i-1] == S[i]:
+    temp = sorted(S)  # time complexity of O(nlogn)
+    for i in range(1, len(temp)):
+        if temp[i-1] == temp[i]:
             return False
     return True
 
