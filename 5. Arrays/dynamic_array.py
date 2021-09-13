@@ -39,6 +39,7 @@ class DynamicArray:
 
 	def insert(self, k, value):
 		"""Inserts a value at specific index"""
+		# IMP:: If we have to insert element then navigate from reverse order
 		if self._n == self._capacity:
 			self._resize(1 * self._capacity)
 		for i in range(self._n, k, -1):         # First make space for new element
@@ -50,6 +51,7 @@ class DynamicArray:
 		"""Removes the first occurrence of the element
 		We do not shrink the array in this method
 		"""
+		# IMP:: If we have to drop/remove an element then navigate in normal order
 		for i in range(self._n):
 			if self._A[i] == value:
 				for j in range(i, self._n - 1):
