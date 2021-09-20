@@ -42,3 +42,39 @@ class _DoublyLinkedBase:
 		element = node._element
 		node._prev = node._next = node._element = None
 		return element
+
+
+class LinkedDeque(_DoublyLinkedBase):
+	"""Doubly ended queue based on the doubly linked list"""
+
+	def first(self):
+		"""Returns first element of the queue"""
+		if self.is_empty():
+			raise Exception("Queue is empty")
+		return self._header._next._element
+
+	def last(self):
+		"""Returns last element of the queue"""
+		if self.is_empty():
+			raise Exception("Queue is empty")
+		return self._trailer._prev._element
+
+	def insert_first(self, item):
+		"""Insert an element at the start of the queue"""
+		self._insert_between(item, self._header, self._header._next)
+
+	def insert_last(self, item):
+		"""Inserts an element at the end of the queue"""
+		self._insert_between(item, self._trailer._prev, self._trailer)
+
+	def delete_first(self):
+		"""Deletes the first element of the queue"""
+		if self.is_empty():
+			raise Exception("Queue is empty")
+		return self._delete_node(self._header._next)
+
+	def delete_last(self):
+		"""Deletes the last element of the queue"""
+		if self.is_empty():
+			raise Exception("Queue is empty")
+		return self._delete_node(self._trailer._prev)
