@@ -98,8 +98,69 @@ def custom_sqrt(n, p):
 	return root
 
 
+def newton_sqrt(n, threshold):
+	"""
+	Find sqrt of a number
+	n -> number
+	threshold -> error threshold which we can tolerate
+	"""
+	x = n
+	while True:
+		root = 0.5 * (x + n/x)
+
+		if abs(root - x) < threshold:
+			return root
+
+		x = root
+
+
+def factors1(n):
+	factors = []
+	for i in range(1, n+1):
+		if n%i == 0:
+			factors.append(i)
+	return factors
+
+
+def factors2(n):
+	"""Loop till sqrt of the number"""
+	factors = []
+	i = 1
+	while i <= math.sqrt(n):
+		if n%i == 0:
+			factors.append(i)
+			factors.append(n/i)
+		i += 1
+	return factors
+
+
+def gcd(a, b):
+	"""
+	Returns greatest common factor/divisor for a & b
+	"""
+	if a == 0:
+		return b
+
+	return gcd(b%a, a)
+
+
+def lcm(a, b):
+	"""
+	Returns the least common multiplier of a & b
+	formula: lcm * (hcf or gcd) = a * b
+	"""
+
+	return (a * b)/gcd(a, b)
+
+
+
 if __name__ == "__main__":
+
 	# print(is_leap(1992))
 	# print(is_prime(482))
 	# print(list_primes(30))
-	print(custom_sqrt(99, 5))
+	# print(custom_sqrt(99, 5))
+	# print(newton_sqrt(99, 0.3))
+	# print(factors1(20))
+	# print(factors2(20))
+	print(gcd(9, 21))
