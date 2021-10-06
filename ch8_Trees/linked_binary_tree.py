@@ -4,16 +4,15 @@ from .binary_tree import BinaryTree
 class LinkedBinaryTree(BinaryTree):
 	"""Linked representation of binary tree structure"""
 
-	class Node: # Lightweight, non public class for storing node
+	class Node:  # Lightweight, non public class for storing node
 
 		__slots__ = '_element', '_parent', '_left', '_right'
 
-		def __init__(self,  element, parent=None, left=None, right=None):
+		def __init__(self, element, parent=None, left=None, right=None):
 			self._element = element
 			self._parent = parent
 			self._left = left
 			self._right = right
-
 
 	class Position(BinaryTree.Position):
 		"""An abstraction representing the location of a single element"""
@@ -37,7 +36,7 @@ class LinkedBinaryTree(BinaryTree):
 			raise TypeError("p must be instance of Position")
 		if p._container is not self:
 			raise ValueError("p does not belong to this container")
-		if p._node._parent is p._node: # convention for deprecated nodes
+		if p._node._parent is p._node:  # convention for deprecated nodes
 			raise ValueError("p is no longer valid")
 		return p._node
 
@@ -107,7 +106,6 @@ class LinkedBinaryTree(BinaryTree):
 		node._left = self.Node(element=e, parent=node)
 		return self._make_position(node._left)
 
-
 	def _add_right(self, p, e):
 		"""Create a new right child of position p storing element e
 		Return position of the new node
@@ -163,7 +161,7 @@ class LinkedBinaryTree(BinaryTree):
 			raise ValueError("position must be a leaf node")
 
 		if not type(self) is type(t1) is type(t2):
-			raise TypeError("Trees must be of similar type")
+			raise TypeError("ch8_Trees must be of similar type")
 
 		self._size = len(t1) + len(t2)
 

@@ -108,7 +108,7 @@ class PredatoryCreditCard(CreditCard):
 
         Returns:
             True, if charge was processed
-            False, if charge is declined and charges $5. Arrays as a fee
+            False, if charge is declined and charges $ch5_Arrays as a fee
 
         """
 
