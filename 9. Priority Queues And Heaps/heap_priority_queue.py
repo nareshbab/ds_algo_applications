@@ -1,4 +1,5 @@
 from priority_queues import PriorityQueueBase
+from postitional_list import PositionalList
 
 
 # Priority Queues implemented using array based representation
@@ -88,3 +89,21 @@ class HeapPriorityQueue(PriorityQueueBase):
 		item = self._data.pop()     # remove the swaped item from the end of the list
 		self._downheap(0)
 		return item._key, item._value
+
+
+# sorting with a priority queue
+def pq_sort(C: PositionalList):
+	"""
+	Sort a collection of elements stored in a positional list
+	If p is unordered positional list ->        O(n2) i.e n + n
+	If p is ordered list ->                     O(n2) because remove_min will
+	take O(1) time for each iteration
+	"""
+	n = len(C)
+	P = HeapPriorityQueue()
+	for j in range(n):
+		element = C.delete(C.first())
+		P.add(element, element)
+	for j in range(n):
+		k, v = P.remove_min()
+		C.add_last(v)
