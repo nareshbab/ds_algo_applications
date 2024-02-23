@@ -12,7 +12,7 @@ Welcome to ds_algo_applications's documentation!
 
 OOPS controller
 =====================
-.. automodule:: oops.oops
+.. automodule:: module
    :members:
 
 
