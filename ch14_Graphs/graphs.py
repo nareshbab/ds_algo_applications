@@ -89,11 +89,6 @@ graph[5].append(Edge(5,6))
 
 graph[6].append(Edge(6,5))
 
-print(str(graph))
-
-
-
-
 visited = set()
 for i in range(n_vertex):
     if i not in visited:
