@@ -128,6 +128,11 @@ def isCycleUndirected(graph, visited, curr, parent):
     return False
 
 
+"""
+A way of sorting graph nodes such that the nodes traversed first
+during traversal are placed before than its neighbour
+"""
+
 def topSort(graph, visited, curr, stack):
 
     # We can use list for keeping visited array instead of set
@@ -136,3 +141,82 @@ def topSort(graph, visited, curr, stack):
         if not visited[neighbour.dest]:
             topSort(graph, visited, neighbour.dest, stack)
     stack.append(curr)
+
+"""
+Dijkstra's Algorithm: A way to find shortest distance from source to target
+
+Relaxation rule:
+    u -> source node
+    v -> destination/target node
+    dt[u] + w < dt[v]
+    dt[v] = dt[u] + w
+
+    Priority Queues are used in Dijkstra's Algorithm
+"""
+
+import sys
+from queue import PriorityQueue
+
+def dijkstra(graph, src, V):
+
+    visited = set()
+    dt = [sys.maxsize] * V
+    dt[src] = 0
+    pq = PriorityQueue()
+    # Priority queue in python has weight as first argument
+    # and key as second
+    pq.put((0,0))
+
+    while not pq.empty():
+        _, u = pq.get()
+
+        if u not in visited:
+            visited.add(u)
+            
+            for neighbour in graph[u]:
+                v = neighbour.dest
+                wt = neighbour.weight
+                if dt[u] + wt < dt[v]:
+                    dt[v] = dt[u] + wt
+                    pq.put((dt[v], v))
+    return dt
+
+"""
+BELLMAN FORD ALGORITHM
+
+Limitation of Dijkstra:
+    - Cannot executed on negative weights
+
+Limitation of Bellman Ford:
+    - Cannot work on graphs having negative weight cycles
+    i.e for graph
+        Edge(A,B,a)
+        Edge(B,C,b)
+        Edge(C,A,c)
+    now -ve weight cycle exists if (a+b+c < 0)
+"""
+
+def bellman(graph, src, V):
+
+    dt = [sys.maxsize] * V
+    dt[src] = 0
+
+    for i in range(V-1):  #O(V)
+        for u in range(V): # O(E)
+            for neighbour in graph[u]:
+                v = neighbour.dest
+                wt = neighbour.weight
+                if dt[u] != sys.maxsize and dt[u] + wt < dt[v]:
+                    dt[v] = dt[u] + wt
+    
+    ## For detecting -ve weight cycle
+    ## Incase distance matrix gets updated then
+    ## Negative weight cycle exists 
+    for u in range(V): # O(E)
+        for neighbour in graph[u]:
+            v = neighbour.dest
+            wt = neighbour.weight
+            if dt[u] != sys.maxsize and dt[u] + wt < dt[v]:
+                print("Negative weight cycle exists")                                                                                                          
+    return dt
+    

@@ -1,4 +1,4 @@
-from .graphs import *
+from graphs import *
 
 
 if __name__ == "__main__":
@@ -133,3 +133,27 @@ if __name__ == "__main__":
     
     for i in range(len(topsort_stack)):
         print(topsort_stack.pop())
+
+    
+    ### DIJKSTRA'S ALGORITHM
+    graph6 = {
+        0: [Edge(0,1,2), Edge(0,2,4)],
+        1: [Edge(1,3,7), Edge(1,2,1)],
+        2: [Edge(2,4,3)],
+        3: [Edge(3,5,1)],
+        4: [Edge(4,3,2),  Edge(4,5,5)],
+        5:[]
+    }
+
+    print("Dijkstra's shortest distance algo :: ", dijkstra(graph6, 0, 6))
+
+    ### BELLMAN FORD ALGORITHM
+    graph7 = {
+        0: [Edge(0,1,2), Edge(0,2,4)],
+        1: [Edge(1,2,-4)],
+        2: [Edge(2,3,2)],
+        3: [Edge(3,4,4)],
+        4: [Edge(4,1,-1)] # Change -1 to -10 for creating negative weight cycle
+    }
+
+    print("Bellman ford algorithm distance matrix :: ", bellman(graph7, 0, 5))
