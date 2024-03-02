@@ -157,3 +157,51 @@ if __name__ == "__main__":
     }
 
     print("Bellman ford algorithm distance matrix :: ", bellman(graph7, 0, 5))
+
+    ### PRIMS ALGORITHM
+    graph8 = {
+        0: [Edge(0,1,10), Edge(0,2,15), Edge(0,3,30)],
+        1: [Edge(1,0,10), Edge(1,3,40)],
+        2: [Edge(2,0,15), Edge(2,3,50)],
+        3: [Edge(3,1,40), Edge(3,2,50)]
+    }
+
+    print("Prims algorithm mst :: ", prims(graph8))
+
+    ### KOSARAJUS ALGORITHM
+    graph9 = {
+        0: [Edge(0,2),Edge(0,3)],
+        1: [Edge(1,0)],
+        2: [Edge(2,1)],
+        3: [Edge(3,4)],
+        4: []
+    }
+
+    n_vertex_kosa = 5 
+    kosa_visited = [False] * n_vertex_kosa
+    kosa_stack =[]
+    kosaraju_scc(graph9, kosa_visited, 0, kosa_stack,n_vertex_kosa)
+
+    ### TARJANS ALGORITHM - FOR BRIDGE DETECTION
+
+    # Graph for single bridge
+    # graph10= {
+    #     0: [Edge(0,1), Edge(0,2), Edge(0,3)],
+    #     1: [Edge(1,0), Edge(1,2)],
+    #     2: [Edge(2,0), Edge(2,1)],
+    #     3: [Edge(3,0), Edge(3,4), Edge(3,5)],
+    #     4: [Edge(4,3), Edge(4,5)],
+    #     5: [Edge(5,3), Edge(5,4)]
+    # }
+
+    # Graph for multiple bridges
+    graph10= {
+        0: [Edge(0,1), Edge(0,2), Edge(0,3)],
+        1: [Edge(1,0), Edge(1,2)],
+        2: [Edge(2,0), Edge(2,1)],
+        3: [Edge(3,0), Edge(3,4)],
+        4: [Edge(4,3)],
+        5: []
+    }
+
+    tarjan_bridge(graph10, 0, -1, 6)

@@ -219,4 +219,131 @@ def bellman(graph, src, V):
             if dt[u] != sys.maxsize and dt[u] + wt < dt[v]:
                 print("Negative weight cycle exists")                                                                                                          
     return dt
+
+"""
+MINIMUM SPANNING TREE
+
+A minimum spanning tree or minimum weight tree is a subset of the edges of a CONNECTED, 
+EDGE_WEIGHTED UNDIRECTED graph that connects all the vertices together,
+without any cycles and with the minimum possible total edge weight
+
+Properties of MST:
+- Subgraph of Graph
+- All vertices present
+- Connected Graph
+- No cyles
+- Edge weight is minimum
+
+Algorithms to find MSTs:
+- Prim's Algorithm
+"""
+
+def prims(graph): ## O(ElogE)
+
+    visited = set()
+    pq = PriorityQueue()
+    ## Priority Queue (weight, key)
+    pq.put((0,0))
+
+    mst_cost = 0
+    while not pq.empty():
+        cost, u = pq.get()
+
+        if u not in visited:
+            visited.add(u)
+            mst_cost += cost
+
+            for neighbour in graph[u]:
+                v = neighbour.dest
+                wt = neighbour.weight
+                if neighbour.dest not in visited:
+                    pq.put((wt, v))
+    return mst_cost
+
+"""
+STRONGLY CONNECTED COMPONENTS
+
+SCC is a component in which we can reach every vertex of the
+component from every other vertex in that component
+
+KOSARAJU's ALGORITHM O(V+E)
+Steps:
+    - Get nodes in stack (topological order) O(V+E)
+    - transpose the graph O(V+E)
+    - Do DFS according to stack nodes on the transposed graph (reverse DFS) O(V+E)
+"""
+
+def kosaraju_scc(graph, visited, curr, stack, V):
+
+    # STEP 1 (TopSort): O(E+V)
+    for i in range(V):
+        if not visited[i]:
+            topSort(graph, visited, curr, stack)
+
+    dfs_visited = set()
+
+    # STEP 2 (TRANSPOSE GRAPH): O(E+V)
+    transposed_graph= {}
     
+    for i in range(V):
+        for neighbour in graph[i]:
+            if transposed_graph.get(neighbour.dest):
+                transposed_graph[neighbour.dest].append(Edge(neighbour.dest, neighbour.src))
+            else:
+                transposed_graph.update({neighbour.dest: [Edge(neighbour.dest,neighbour.src)]})
+    
+    # STEP 3 DFS OF TOPSORT STACK: O(E+V)
+    while len(stack) > 0:
+        curr = stack.pop()
+        if curr not in dfs_visited:
+            dfs(transposed_graph, Edge(curr, 0), dfs_visited)
+            print()
+
+"""
+BRIDGE IN GRAPHS:
+Bridge is an edge whose deletion increases 
+the graph's number of connected components
+
+TARJAN'S ALGORITHM:
+    - perform DFS
+    - compare dt[u] < low[v]
+"""
+
+def tarjan_dfs(graph, curr, visited, dt, low, time, parent):
+    
+    visited.add(curr)
+    dt[curr] = low[curr] = time + 1
+    
+    for neighbour in graph[curr]:
+        # pass if the neighbour is parent
+        if neighbour.dest == parent:
+            continue
+        
+        # if node is not visited do DFS and update the lowest of node
+        elif neighbour.dest not in visited:
+            tarjan_dfs(graph, neighbour.dest, visited, dt, low, time+1, curr)
+            low[curr] = min(low[curr], low[neighbour.dest])
+
+            # now check for bridge condition
+            if dt[curr] < low[neighbour.dest]:
+                print(curr, "----->", neighbour.dest)
+        
+        # if node is visited and not its parent then update the lowest of node
+        # neighbour.dest !=parent and neighbour.dest in visited:
+        else:
+            low[curr] = min(low[curr], dt[neighbour.dest])
+
+def tarjan_bridge(graph, curr, parent, V):
+    # set intial time to 0
+    t = 0
+    dt = [sys.maxsize] * V
+    low = [sys.maxsize] * V
+    visited  = set()
+    dt[curr] = low[curr] = t + 1
+
+    for i in range(V):
+        if i not in visited:
+            tarjan_dfs(graph, i, visited, dt, low, t, -1)            
+
+
+
