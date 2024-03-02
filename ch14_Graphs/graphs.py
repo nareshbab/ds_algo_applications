@@ -100,93 +100,39 @@ def isCycleDirected(graph, curr, visited, recursion_stack):
     recursion_stack[curr] =False
     return False
 
+"""
+For undirected graphs the neighbours fall in three categories during DFS
+1. visited[neighbour] = T and neighbour != parent
+        THIS IS CYCLIC CONDITION
+2. visited[neighbour] = T and neighbour == parent
+        DO NOTHING
+3. visited[neighbour] = F
+        DO DFS
+"""
 
-if __name__ == "__main__":
+def isCycleUndirected(graph, visited, curr, parent):
+    visited.add(curr)
 
-    graph1 = {}
-    n_vertex = 7
-
-    """
-    1-----3
-    /      |\\ 
-    0       | 5-6
-    \\      |/
-    2-----4
-    """
-
-    for i in range(n_vertex):
-        graph1.update({i:list()})
-
-    graph1[0].append(Edge(0,1))
-    graph1[0].append(Edge(0,2))
-
-    graph1[1].append(Edge(1,0))
-    graph1[1].append(Edge(1,3))
-
-    graph1[2].append(Edge(2,0))
-    graph1[2].append(Edge(2,4))
-
-    graph1[3].append(Edge(3,1))
-    graph1[3].append(Edge(3,4))
-    graph1[3].append(Edge(3,5))
-
-    graph1[4].append(Edge(4,2))
-    graph1[4].append(Edge(4,3))
-    graph1[4].append(Edge(4,5))
-
-    graph1[5].append(Edge(5,3))
-    graph1[5].append(Edge(5,4))
-    graph1[5].append(Edge(5,6))
-
-    graph1[6].append(Edge(6,5))
-
-    # bfs_visited = set()
-    # for i in range(n_vertex):
-    #     if i not in bfs_visited:
-    #         bfs(graph, bfs_visited, i)
-
-    """
-          1-----3
-         /      |\\ 
-        0       | 5-6
-        \\      |/
-          2-----4
-    """
-
-    # Another way of representing graph
-    graph2 = {
-        0 : [1,2],
-        1 : [0,3],
-        2 : [0,4],
-        3 : [1,4,5],
-        4 : [2,3,5],
-        5 : [3,4,6],
-        6 : [5]
-    }
-
-    # dfs_visited = set()
-    # for i in range(n_vertex):
-    #     if i not in dfs_visited:
-    #         dfs(graph1, Edge(i, 0), dfs_visited)
-
-    # all_paths_visited = set()
-    # pathSourceToTarget(graph2, 0, all_paths_visited, "0", 5)
-
-    # Cycle detection
-    graph3 = {
-        0: [2],
-        1: [0],
-        2: [3],
-        3: [0]
-    }
-
-    cycle_visited = set()
-    recursion_stack = [False] * 4
-    for i in range(4):
-        if i not in cycle_visited:
-            isCycle = isCycleDirected(graph3, i, cycle_visited, recursion_stack)
-            if isCycle:
-                print(isCycle)
-                break
+    for neighbour in graph[curr]:
+        # order matters, dont run this if after below's if
+        # in case it is done, there are chances that isCycleUndirected will return false
+        # but will make visited true. Then checking this condition will be True and it
+        # will return True
+        if neighbour.dest in visited and neighbour.dest != parent:
+            return True
+    
+        if neighbour.dest not in visited:
+            if isCycleUndirected(graph, visited, neighbour.dest, curr):
+                return True
+            
+    return False
 
 
+def topSort(graph, visited, curr, stack):
+
+    # We can use list for keeping visited array instead of set
+    visited[curr] = True
+    for neighbour in graph[curr]:
+        if not visited[neighbour.dest]:
+            topSort(graph, visited, neighbour.dest, stack)
+    stack.append(curr)
