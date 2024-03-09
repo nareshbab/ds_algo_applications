@@ -54,7 +54,7 @@ def selection_sort(arr):
 	for i in range(len(arr)):
 		min_index = i
 		for j in range(i + 1, len(arr)):
-			if arr[j] < arr[i]:
+			if arr[j] < arr[min_index]:
 				min_index = j
 		arr[i], arr[min_index] = arr[min_index], arr[i]
 	return arr
@@ -303,4 +303,5 @@ def bucket_sort(arr):
 
 if __name__ == '__main__':
 	# print(quick_sort(0, 5, [3, 6, 1, 7, 9, 3]))
-	print(bucket_sort([3, 6, 1, 7, 9, 3]))
+	# print(bucket_sort([3, 6, 1, 7, 9, 3]))
+	print(insertion_sort([7,8,3,1,2]))
